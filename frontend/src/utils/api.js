@@ -75,7 +75,7 @@ class Api {
 const api = new Api({
   baseUrl:
     process.env.NODE_ENV === "production"
-      ? "https://api.aroundexp.chickenkiller.com/"
+      ? "https://api.aroundexp.chickenkiller.com"
       : "http://localhost:3000",
   headers: {
     "Content-Type": "application/json",

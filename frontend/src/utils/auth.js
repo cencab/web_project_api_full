@@ -1,6 +1,6 @@
 const BASE_URL =
   process.env.NODE_ENV === "production"
-    ? "https://api.aroundexp.chickenkiller.com/"
+    ? "https://api.aroundexp.chickenkiller.com"
     : "http://localhost:3000";
 
 const checkResponse = (res) => {
