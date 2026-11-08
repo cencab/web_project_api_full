@@ -27,31 +27,37 @@ function App() {
       auth
         .checkToken(token)
         .then((res) => {
-          if (res.data) {
+          const userData = res.data ? res.data : res;
+          if (userData) {
             setLoggedIn(true);
-            setUserEmail(res.data.email);
+            setUserEmail(userData.email);
             navigate("/");
           }
         })
-        .catch(console.error);
+        .catch((err) => {
+          console.error("Token inválido o expirado:", err);
+          localStorage.removeItem("jwt");
+        });
     }
   }, [navigate]);
 
   useEffect(() => {
-    api
-      .getUserInfo()
-      .then((data) => {
-        setCurrentUser(data);
-      })
-      .catch((error) => console.error("Error al cargar perfil:", error));
+    if (loggedIn) {
+      api
+        .getUserInfo()
+        .then((data) => {
+          setCurrentUser(data.data ? data.data : data);
+        })
+        .catch((error) => console.error("Error al cargar perfil:", error));
 
-    api
-      .getCardList()
-      .then((data) => {
-        setCards(data);
-      })
-      .catch((error) => console.error("Error al cargar tarjetas:", error));
-  }, []);
+      api
+        .getCardList()
+        .then((data) => {
+          setCards(data.data ? data.data : data);
+        })
+        .catch((error) => console.error("Error al cargar tarjetas:", error));
+    }
+  }, [loggedIn]);
 
   function handleOpenPopup(popupConfig) {
     setPopup(popupConfig);
